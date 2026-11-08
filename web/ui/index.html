@@ -1,0 +1,493 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Bitiato UI · Symbol lab</title>
+    <style>
+      @font-face {
+        font-family: "Bitiato UI";
+        src: url("./bitiato_ui.ttf") format("truetype");
+        font-display: block;
+      }
+
+      :root {
+        color-scheme: dark;
+        font-family: system-ui, sans-serif;
+        color: #edf4ff;
+        background: #0b1523;
+        --muted: #a8bdd6;
+        --line: #314863;
+        --active: #8af4ce;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+      }
+      main {
+        width: min(100% - 2rem, 54rem);
+        margin: 2.5rem auto;
+      }
+      h1,
+      h2,
+      p {
+        margin: 0;
+      }
+      h1 {
+        font-size: clamp(2rem, 7vw, 4rem);
+        margin-top: 0.35rem;
+      }
+      h2 {
+        font-size: 1.2rem;
+      }
+      .eyebrow {
+        color: var(--active);
+        font:
+          700 0.85rem ui-monospace,
+          monospace;
+        letter-spacing: 0.12em;
+      }
+      .note {
+        color: var(--muted);
+        line-height: 1.5;
+        margin-top: 0.65rem;
+      }
+      section {
+        margin-top: 1.25rem;
+        padding: 1.15rem;
+        background: #132238;
+        border: 1px solid var(--line);
+        border-radius: 1rem;
+      }
+      .symbols {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(8rem, 1fr));
+        gap: 0.6rem;
+        margin-top: 0.8rem;
+      }
+      .tile {
+        display: grid;
+        text-align: center;
+        background: #0f1c2e;
+        border: 1px solid var(--line);
+        border-radius: 0.7rem;
+        padding: 0.45rem;
+      }
+      .glyph {
+        font-family: "Bitiato UI", system-ui, sans-serif;
+        font-size: 3.5rem;
+        line-height: 1.1;
+        color: var(--active);
+      }
+      .tile code,
+      #codes {
+        color: var(--muted);
+      }
+      .composer {
+        display: grid;
+        gap: 0.7rem;
+        margin-top: 1rem;
+      }
+      select,
+      textarea {
+        color: inherit;
+        background: #0f1c2e;
+        border: 1px solid var(--line);
+        border-radius: 0.55rem;
+      }
+      select {
+        font: inherit;
+        padding: 0.55rem;
+        width: fit-content;
+      }
+      textarea {
+        width: 100%;
+        resize: none;
+        padding: 0.35rem 0.65rem;
+      }
+      :focus-visible {
+        outline: 3px solid #ffd481;
+        outline-offset: 3px;
+      }
+      a {
+        color: var(--active);
+      }
+      .entry {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.6rem;
+        align-items: center;
+      }
+      .actions {
+        padding-top: 0.7rem;
+        border-top: 1px solid var(--line);
+      }
+      #units button[aria-pressed="true"] {
+        border-color: var(--active);
+        color: var(--active);
+      }
+      .entry .glyph {
+        font-size: 1.7rem;
+      }
+      button,
+      input {
+        font: inherit;
+        color: inherit;
+        background: #0f1c2e;
+        border: 1px solid var(--line);
+        border-radius: 0.55rem;
+        padding: 0.5rem;
+      }
+      button {
+        cursor: pointer;
+      }
+      #sequence {
+        resize: vertical;
+        overflow-wrap: anywhere;
+        font-size: clamp(1.35rem, 4vw, 2.25rem);
+      }
+      #tokens,
+      #codes {
+        overflow-wrap: anywhere;
+      }
+      #tokens {
+        padding-left: 1.3rem;
+        margin: 0;
+      }
+      details {
+        margin-top: 0.7rem;
+      }
+      summary {
+        cursor: pointer;
+      }
+      .property {
+        display: grid;
+        grid-template-columns: 3rem minmax(0, 1fr);
+        align-items: center;
+        gap: 0.45rem;
+        padding: 0.35rem 0;
+        border-bottom: 1px solid var(--line);
+      }
+      .property .glyph {
+        font-size: 2.5rem;
+      }
+      .property small {
+        display: block;
+        color: var(--muted);
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <header>
+        <p class="eyebrow">BITIATO · LEVEL 2</p>
+        <h1>UI Symbol Lab</h1>
+        <p class="note">One symbol identifies the component. Append property symbols and an optional state.</p>
+      </header>
+      <section aria-labelledby="inventory">
+        <h2 id="inventory">Component inventory</h2>
+        <div id="component-inventory" class="symbols"></div>
+      </section>
+      <section aria-labelledby="compose">
+        <h2 id="compose">Compose components</h2>
+        <div class="composer">
+          <form id="add-symbol" class="composer">
+            <div class="entry">
+              <label for="component-type">Component</label>
+              <select id="component-type"></select>
+              <span id="component-preview" class="glyph" aria-hidden="true"></span>
+            </div>
+            <div class="entry">
+              <label for="family">Family</label>
+              <select id="family"></select>
+              <label for="property">Symbol</label>
+              <select id="property"></select>
+              <span id="property-preview" class="glyph" aria-hidden="true"></span>
+              <label id="value-label" for="value">Value (optional)</label>
+              <input id="value" />
+            </div>
+            <p id="compatibility" class="note" aria-live="polite"></p>
+          </form>
+          <label for="sequence">Symbol sequence</label>
+          <textarea id="sequence" class="glyph" rows="2" readonly>&#xE000;</textarea>
+          <code id="codes">U+E000</code>
+          <div class="entry" role="group" aria-labelledby="units-label">
+            <span id="units-label">Symbols are added to</span>
+            <span id="units" class="entry"></span>
+          </div>
+          <p id="description" aria-live="polite">Button</p>
+          <ul id="tokens" aria-label="Added symbols"></ul>
+          <p class="note">
+            Adding a state replaces the current state. Two spaces separate parts and three separate components. In the
+            code line, each ␣ marks one space.
+          </p>
+          <div class="entry actions">
+            <button type="button" id="add-component">Add component</button>
+            <button type="submit" form="add-symbol">Add symbol</button>
+            <button type="button" id="remove-component">Remove component</button>
+            <button type="button" id="copy">Copy sequence</button>
+            <span id="copy-status" class="note" aria-live="polite"></span>
+          </div>
+        </div>
+        <p class="note">Paste the sequence into a document set in Bitiato UI.</p>
+      </section>
+      <section aria-labelledby="catalog-title">
+        <h2 id="catalog-title">Initial property catalog</h2>
+        <p class="note">All symbols are available to explore. The compatibility notes are provisional.</p>
+        <div id="catalog"></div>
+      </section>
+      <p class="note"><a href="./bitiato_ui.ttf" download>Download Bitiato UI</a></p>
+    </main>
+    <script src="./symbols.js"></script>
+    <script>
+      const family = document.getElementById("family");
+      const sequence = document.getElementById("sequence");
+      const description = document.getElementById("description");
+      const codes = document.getElementById("codes");
+      const form = document.getElementById("add-symbol");
+      const property = document.getElementById("property");
+      const propertyPreview = document.getElementById("property-preview");
+      const tokens = document.getElementById("tokens");
+      const inventory = document.getElementById("catalog");
+      const unitList = document.getElementById("units");
+      let current = 0;
+      const addComponent = document.getElementById("add-component");
+      const valueInput = document.getElementById("value");
+      const valueLabel = document.getElementById("value-label");
+      const componentType = document.getElementById("component-type");
+      const componentPreview = document.getElementById("component-preview");
+      const componentInventory = document.getElementById("component-inventory");
+      const removeComponent = document.getElementById("remove-component");
+      const compatibility = document.getElementById("compatibility");
+      const copy = document.getElementById("copy");
+      const copyStatus = document.getElementById("copy-status");
+      const componentTypes = new Map(components.map((entry) => [entry.code, entry]));
+      const units = [{ type: components[0], properties: new Map() }];
+
+      function symbol(code) {
+        return String.fromCodePoint(parseInt(code, 16));
+      }
+
+      const componentGroups = new Map();
+      for (const { code, label, group } of components) {
+        if (!componentGroups.has(group)) {
+          const options = document.createElement("optgroup");
+          options.label = group;
+          componentType.append(options);
+          componentGroups.set(group, options);
+        }
+        componentGroups.get(group).append(new Option(label, code));
+        const tile = document.createElement("div");
+        const glyph = document.createElement("span");
+        const point = document.createElement("code");
+        tile.className = "tile";
+        glyph.className = "glyph";
+        glyph.setAttribute("aria-hidden", "true");
+        glyph.textContent = symbol(code);
+        point.textContent = "U+" + code;
+        tile.append(glyph, label, point);
+        componentInventory.append(tile);
+      }
+
+      const groups = new Map();
+      for (const entry of catalog) {
+        if (!groups.has(entry.family)) {
+          const group = document.createElement("details");
+          group.open = groups.size === 0;
+          const heading = document.createElement("summary");
+          heading.textContent = String(groups.size + 1).padStart(2, "0") + " · " + entry.family;
+          group.append(heading);
+          inventory.append(group);
+          groups.set(entry.family, group);
+          family.add(new Option(heading.textContent, entry.family));
+        }
+        const row = document.createElement("div");
+        const glyph = document.createElement("span");
+        const label = document.createElement("div");
+        const metadata = document.createElement("small");
+        row.className = "property";
+        glyph.className = "glyph";
+        glyph.setAttribute("aria-hidden", "true");
+        glyph.textContent = symbol(entry.code);
+        label.textContent = entry.label;
+        const compatible = entry.compatible.join(", ");
+        metadata.textContent = "U+" + entry.code + " · " + entry.kind + " · " + compatible;
+        label.append(metadata);
+        row.append(glyph, label);
+        groups.get(entry.family).append(row);
+      }
+
+      function serialize({ type, properties }) {
+        let text = symbol(type.code);
+        let previousFamily;
+        let previousValue = false;
+        for (const { code, family } of catalog) {
+          if (!properties.has(code)) continue;
+          if (family !== previousFamily || previousValue) text += "  ";
+          text += symbol(code);
+          const value = properties.get(code);
+          if (value) text += "  " + value;
+          previousFamily = family;
+          previousValue = Boolean(value);
+        }
+        return text;
+      }
+
+      function render() {
+        const { type, properties } = units[current];
+        const labels = [type.label + " " + (current + 1)];
+        tokens.replaceChildren();
+        for (const { code, label } of catalog) {
+          if (!properties.has(code)) continue;
+          const value = properties.get(code);
+          const itemLabel = value ? label + " · " + value : label;
+          labels.push(itemLabel);
+
+          const item = document.createElement("li");
+          item.textContent = itemLabel + " ";
+          const remove = document.createElement("button");
+          remove.type = "button";
+          remove.textContent = "Remove";
+          remove.setAttribute("aria-label", "Remove " + label);
+          remove.addEventListener("click", () => {
+            properties.delete(code);
+            render();
+            property.focus();
+          });
+          item.append(remove);
+          tokens.append(item);
+        }
+        sequence.value = units.map(serialize).join("   ");
+        description.textContent = labels.join(" · ");
+        codes.textContent = describeCodes(sequence.value);
+        removeComponent.disabled = units.length === 1;
+        renumberComponents();
+        copyStatus.textContent = "";
+        checkCompatibility();
+      }
+
+      // Shows code points, values, and every space so boundaries stay visible.
+      function describeCodes(text) {
+        return text
+          .split(/( +)/)
+          .filter(Boolean)
+          .flatMap((part) => {
+            if (part.startsWith(" ")) return ["␣".repeat(part.length)];
+            return part
+              .split(/(\p{Co})/u)
+              .filter(Boolean)
+              .map((piece) => (/\p{Co}/u.test(piece) ? "U+" + piece.codePointAt(0).toString(16).toUpperCase() : piece));
+          })
+          .join(" ");
+      }
+
+      function checkCompatibility() {
+        const entry = catalog.find(({ code }) => code === property.value);
+        const { label } = units[current].type;
+        compatibility.textContent =
+          entry && !entry.compatible.includes(label)
+            ? entry.label + " has no draft compatibility entry for " + label + "."
+            : "";
+      }
+
+      function renumberComponents() {
+        unitList.replaceChildren(
+          ...units.map(({ type }, index) => {
+            const button = document.createElement("button");
+            button.type = "button";
+            button.textContent = type.label + " " + (index + 1);
+            button.setAttribute("aria-pressed", String(index === current));
+            button.addEventListener("click", () => {
+              selectUnit(index);
+              unitList.children[index].focus();
+            });
+            return button;
+          })
+        );
+      }
+
+      function selectUnit(index) {
+        current = index;
+        componentType.value = units[current].type.code;
+        previewComponent();
+        previewProperty();
+        render();
+      }
+
+      form.addEventListener("submit", (event) => {
+        event.preventDefault();
+        const entry = catalog.find(({ code }) => code === property.value);
+        const { properties } = units[current];
+        const value = valueInput.disabled ? "" : valueInput.value.trim();
+        if (/ {2}|[^\S ]|\p{Co}/u.test(value)) {
+          valueInput.setCustomValidity("Use single spaces and plain text without Bitiato symbols.");
+          valueInput.reportValidity();
+          return;
+        }
+        if (entry.kind === "State") {
+          const previousState = catalog.find(({ kind, code }) => kind === "State" && properties.has(code));
+          if (previousState) properties.delete(previousState.code);
+        }
+        properties.set(entry.code, value);
+        render();
+      });
+
+      removeComponent.addEventListener("click", () => {
+        if (units.length === 1) return;
+        const index = current;
+        units.splice(index, 1);
+        selectUnit(Math.min(index, units.length - 1));
+        unitList.children[current].focus();
+      });
+
+      copy.addEventListener("click", async () => {
+        try {
+          await navigator.clipboard.writeText(sequence.value);
+          copyStatus.textContent = "Copied.";
+        } catch {
+          sequence.select();
+          copyStatus.textContent = "Select the sequence and copy it manually.";
+        }
+      });
+
+      function previewProperty() {
+        propertyPreview.textContent = symbol(property.value);
+        const isState = family.value === "States";
+        valueInput.hidden = valueLabel.hidden = valueInput.disabled = isState;
+        valueInput.setCustomValidity("");
+        valueInput.value = units[current].properties.get(property.value) ?? "";
+        checkCompatibility();
+      }
+
+      function updateOptions() {
+        const options = catalog.filter((entry) => entry.family === family.value);
+        property.replaceChildren(...options.map(({ label, code }) => new Option(label, code)));
+        previewProperty();
+      }
+
+      family.addEventListener("change", updateOptions);
+      property.addEventListener("change", previewProperty);
+      valueInput.addEventListener("input", () => valueInput.setCustomValidity(""));
+      function previewComponent() {
+        componentPreview.textContent = symbol(componentType.value);
+      }
+
+      componentType.addEventListener("change", () => {
+        units[current].type = componentTypes.get(componentType.value);
+        previewComponent();
+        render();
+      });
+      addComponent.addEventListener("click", () => {
+        const type = componentTypes.get(componentType.value);
+        units.push({ type, properties: new Map() });
+        selectUnit(units.length - 1);
+      });
+      updateOptions();
+      previewComponent();
+      render();
+    </script>
+  </body>
+</html>

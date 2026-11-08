@@ -1,0 +1,296 @@
+[
+  {
+    "code": "E200",
+    "family": "Identity",
+    "kind": "Attribute",
+    "label": "ID",
+    "compatible": ["Button", "List", "Menu", "Text Field", "List Item"]
+  },
+  {
+    "code": "E201",
+    "family": "Identity",
+    "kind": "Attribute",
+    "label": "Name",
+    "compatible": ["Button", "List", "Menu", "Text Field", "List Item"]
+  },
+  {
+    "code": "E202",
+    "family": "Identity",
+    "kind": "Attribute",
+    "label": "Type",
+    "compatible": ["Button", "List", "Menu", "Text Field", "List Item"]
+  },
+  {
+    "code": "E220",
+    "family": "Structure",
+    "kind": "Relationship",
+    "label": "Parent",
+    "compatible": ["Button", "List", "Menu", "Text Field", "List Item"]
+  },
+  {
+    "code": "E221",
+    "family": "Structure",
+    "kind": "Relationship",
+    "label": "Children",
+    "compatible": ["List", "Menu", "List Item"]
+  },
+  {
+    "code": "E222",
+    "family": "Structure",
+    "kind": "Relationship",
+    "label": "Order",
+    "compatible": ["Button", "List", "Menu", "Text Field", "List Item"]
+  },
+  {
+    "code": "E230",
+    "family": "Relationships",
+    "kind": "Relationship",
+    "label": "Belongs to",
+    "compatible": ["Button", "List", "Menu", "Text Field", "List Item"]
+  },
+  {
+    "code": "E231",
+    "family": "Relationships",
+    "kind": "Relationship",
+    "label": "Controls",
+    "compatible": ["Button", "List", "Menu", "Text Field", "List Item"]
+  },
+  {
+    "code": "E232",
+    "family": "Relationships",
+    "kind": "Relationship",
+    "label": "References",
+    "compatible": ["Button", "List", "Menu", "Text Field", "List Item"]
+  },
+  {
+    "code": "E280",
+    "family": "Data",
+    "kind": "Binding",
+    "label": "Source",
+    "compatible": ["Button", "List", "Menu", "Text Field", "List Item"]
+  },
+  {
+    "code": "E281",
+    "family": "Data",
+    "kind": "Binding",
+    "label": "Destination",
+    "compatible": ["Button", "Text Field"]
+  },
+  {
+    "code": "E282",
+    "family": "Data",
+    "kind": "Binding",
+    "label": "Data reference",
+    "compatible": ["Button", "List", "Menu", "Text Field", "List Item"]
+  },
+  {
+    "code": "E210",
+    "family": "Content",
+    "kind": "Attribute",
+    "label": "Text",
+    "compatible": ["Button", "Text Field"]
+  },
+  {
+    "code": "E211",
+    "family": "Content",
+    "kind": "Attribute",
+    "label": "Value",
+    "compatible": ["Button", "Text Field"]
+  },
+  {
+    "code": "E212",
+    "family": "Content",
+    "kind": "Attribute",
+    "label": "Items",
+    "compatible": ["List", "Menu", "List Item"]
+  },
+  {
+    "code": "E2A0",
+    "family": "Accessibility",
+    "kind": "Attribute",
+    "label": "Accessible name",
+    "compatible": ["Button", "List", "Menu", "Text Field", "List Item"]
+  },
+  {
+    "code": "E2A1",
+    "family": "Accessibility",
+    "kind": "Attribute",
+    "label": "Description",
+    "compatible": ["Button", "List", "Menu", "Text Field", "List Item"]
+  },
+  {
+    "code": "E2A2",
+    "family": "Accessibility",
+    "kind": "Attribute",
+    "label": "Role",
+    "compatible": ["Button", "List", "Menu", "Text Field", "List Item"]
+  },
+  {
+    "code": "E240",
+    "family": "Capabilities",
+    "kind": "Capability",
+    "label": "Editable",
+    "compatible": ["Text Field"]
+  },
+  {
+    "code": "E241",
+    "family": "Capabilities",
+    "kind": "Capability",
+    "label": "Selectable",
+    "compatible": ["List", "Menu", "Text Field", "List Item"]
+  },
+  {
+    "code": "E242",
+    "family": "Capabilities",
+    "kind": "Capability",
+    "label": "Expandable",
+    "compatible": ["Button", "List", "Menu", "List Item"]
+  },
+  {
+    "code": "E270",
+    "family": "Constraints",
+    "kind": "Constraint",
+    "label": "Minimum",
+    "compatible": ["List", "Text Field", "List Item"]
+  },
+  {
+    "code": "E271",
+    "family": "Constraints",
+    "kind": "Constraint",
+    "label": "Maximum",
+    "compatible": ["List", "Text Field", "List Item"]
+  },
+  {
+    "code": "E272",
+    "family": "Constraints",
+    "kind": "Constraint",
+    "label": "Required",
+    "compatible": ["Text Field"]
+  },
+  {
+    "code": "E290",
+    "family": "Validation",
+    "kind": "Rule",
+    "label": "Value type",
+    "compatible": ["Text Field"]
+  },
+  {
+    "code": "E291",
+    "family": "Validation",
+    "kind": "Rule",
+    "label": "Format",
+    "compatible": ["Text Field"]
+  },
+  {
+    "code": "E292",
+    "family": "Validation",
+    "kind": "Rule",
+    "label": "Pattern",
+    "compatible": ["Text Field"]
+  },
+  {
+    "code": "E100",
+    "family": "States",
+    "kind": "State",
+    "label": "Focused",
+    "compatible": ["Button", "List", "Menu", "Text Field", "List Item"]
+  },
+  {
+    "code": "E101",
+    "family": "States",
+    "kind": "State",
+    "label": "Pressed",
+    "compatible": ["Button"]
+  },
+  {
+    "code": "E102",
+    "family": "States",
+    "kind": "State",
+    "label": "Disabled",
+    "compatible": ["Button", "List", "Menu", "Text Field", "List Item"]
+  },
+  {
+    "code": "E103",
+    "family": "States",
+    "kind": "State",
+    "label": "Active",
+    "compatible": ["Button", "Menu"]
+  },
+  {
+    "code": "E104",
+    "family": "States",
+    "kind": "State",
+    "label": "Selected",
+    "compatible": ["List", "Menu", "List Item"]
+  },
+  {
+    "code": "E260",
+    "family": "Events",
+    "kind": "Event",
+    "label": "Press event",
+    "compatible": ["Button", "Menu"]
+  },
+  {
+    "code": "E261",
+    "family": "Events",
+    "kind": "Event",
+    "label": "Change event",
+    "compatible": ["Button", "List", "Menu", "Text Field", "List Item"]
+  },
+  {
+    "code": "E262",
+    "family": "Events",
+    "kind": "Event",
+    "label": "Input event",
+    "compatible": ["Text Field"]
+  },
+  {
+    "code": "E250",
+    "family": "Behavior",
+    "kind": "Operation",
+    "label": "Toggle",
+    "compatible": ["Button", "Menu"]
+  },
+  {
+    "code": "E251",
+    "family": "Behavior",
+    "kind": "Operation",
+    "label": "Submit",
+    "compatible": ["Button", "Text Field"]
+  },
+  {
+    "code": "E252",
+    "family": "Behavior",
+    "kind": "Operation",
+    "label": "Navigate",
+    "compatible": ["Button", "Menu"]
+  },
+  {
+    "code": "E253",
+    "family": "Behavior",
+    "kind": "Operation",
+    "label": "Action",
+    "compatible": ["Button", "Menu"]
+  },
+  {
+    "code": "E2B0",
+    "family": "Temporality",
+    "kind": "Timing",
+    "label": "Duration",
+    "compatible": ["Button", "List", "Menu", "Text Field", "List Item"]
+  },
+  {
+    "code": "E2B1",
+    "family": "Temporality",
+    "kind": "Timing",
+    "label": "Interval",
+    "compatible": ["Button", "List", "Menu", "Text Field", "List Item"]
+  },
+  {
+    "code": "E2B2",
+    "family": "Temporality",
+    "kind": "Timing",
+    "label": "Delay",
+    "compatible": ["Button", "List", "Menu", "Text Field", "List Item"]
+  }
+]

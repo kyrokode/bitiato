@@ -4,6 +4,10 @@ Bitiato is a binary system for interpreting concepts in a selected language laye
 small hardware. Its five primary layers share the same binary positions.
 A position's meaning depends on the active layer and convention version.
 
+Bitiato aims for simplicity as a shared benefit for people and machines.
+Simpler notation saves resources and makes meaning faster to understand
+on both sides.
+
 ## Explore the 16 cells
 
 Open [the visual explorer](web/index.html) directly in a browser. It runs
@@ -17,6 +21,12 @@ Use **Keep the bits** to stay in the same cell instead.
 
 The explorer reproduces the reference map in the browser. Its alternate
 map is for illustration and is independent of the C99 demo.
+
+## Explore the Level 2 UI language
+
+Open the [UI Symbol Lab](web/ui/index.html) to compose basic UI components
+with reusable properties and states. The [UI language notes](docs/ui-language.md)
+describe the notation, the symbol font and how to rebuild it.
 
 ## Run the five senses demo
 
