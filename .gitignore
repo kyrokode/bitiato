@@ -1,0 +1,27 @@
+# ktrunk: local recovery artifacts
+/.ktrunk-cspell-lock/
+/.ktrunk-cspell-transaction.*/
+
+# Local development configuration
+/.agents/
+/.claude/
+/.cspell/
+/.trunk/
+/.vscode/
+/AGENTS.md
+/agents-catalog.LICENSE
+/agents.config.json
+/agents.lock.json
+/openspec/
+
+# Local builds
+/bitiato-demo
+/bitiato-demo.exe
+/bitiato-test
+/bitiato-test.exe
+*.o
+*.obj
+*.dSYM/
+
+# macOS metadata
+.DS_Store

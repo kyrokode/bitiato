@@ -1,55 +1,96 @@
 # Bitiato
 
-A shared binary language, even for simple hardware.
+Bitiato is a binary system for interpreting concepts in a selected language layer, even on
+small hardware. Its five primary layers share the same binary positions.
+A position's meaning depends on the active layer and convention version.
 
-Bitiato is an open-source project for encoding concepts in a small binary
-code space. Devices interpret each position using an active layer and a
-shared version of the convention.
+## Explore the 16 cells
 
-## Architecture
+Open [the visual explorer](web/index.html) directly in a browser. It runs
+offline without a server or compiler. Choose a language layer first. The
+explorer starts at position `0000`, the first equivalence in each layer
+of `demo-v1`. Select another layer to interpret the same bits there.
 
-- **Layers reuse positions.** The same binary position can identify a letter,
-  a musical note, or a color in different layers. The meaning depends on the
-  convention version, the active layer, and the position.
-- **Every version defines a complete convention.** It defines all its layers
-  and the positions assigned to their concepts. A new version may rearrange
-  those assignments. Published versions keep their original mappings and
-  remain usable.
-- **Devices use a shared convention for each exchange.** A device may support
-  one version or several. Compatibility is specific to the two endpoints and
-  the version they use for that exchange.
-- **Distribution and operation are separate.** Conventions are defined
-  externally and can be distributed over a wide-area network (WAN). Connected
-  devices can adopt newer versions. Offline devices continue using their
-  installed convention.
+Choose **Follow the concept** to compare conventions. In Vision, red
+moves from `0000` in `demo-v1` to `1001` in the illustrative alternate map.
+Use **Keep the bits** to stay in the same cell instead.
 
-## A four-bit example
+The explorer reproduces the reference map in the browser. Its alternate
+map is for illustration and is independent of the C99 demo.
 
-Four bits offer 16 code values. An illustrative convention could reserve two
-values to select a layer and reuse the other 14 positions in each layer.
-That gives 28 possible concept assignments across two layers. Reserving four
-selectors instead leaves 12 positions per layer, or 48 assignments across
-four layers. These totals count assignments across contexts. Selecting the
-context also consumes a code value when it is sent.
+## Run the five senses demo
 
-## Interoperability example
+From the repository root, build with a C99 compiler on macOS or Linux.
+The demo uses the C standard library and its map is compiled into the
+executable, so it also runs offline.
 
-Suppose a Flipper is built with convention `v58`, a phone supports both
-`v58` and `v8000`, and a server supports only `v8000`.
+```sh
+cc -std=c99 -Wall -Wextra -pedantic -Werror \
+  src/bitiato.c conventions/demo_v1.c src/demo.c -o bitiato-demo
+./bitiato-demo vision
+```
 
-| Devices | Convention for the exchange |
+On Windows with GCC (for example, from MinGW-w64), run these commands from
+PowerShell.
+
+```powershell
+gcc -std=c99 -Wall -Wextra -pedantic -Werror src/bitiato.c conventions/demo_v1.c src/demo.c -o bitiato-demo.exe
+.\bitiato-demo.exe vision
+```
+
+The first argument selects the language layer. The position defaults to
+`0000`. Run `./bitiato-demo all` to compare the five interpretations. The columns are convention, layer, input bits, concept ID
+and label.
+
+```text
+demo-v1 | Vision | 0000 | 1 | red
+demo-v1 | Hearing | 0000 | 5 | do
+demo-v1 | Smell | 0000 | 9 | floral
+demo-v1 | Taste | 0000 | 13 | sweet
+demo-v1 | Touch | 0000 | 17 | soft
+```
+
+Pass four bits after the layer key to try another position. In PowerShell, use `.\bitiato-demo.exe` with the same arguments.
+
+| Invocation | Result |
 | --- | --- |
-| Flipper and phone | `v58` |
-| Phone and server | `v8000` |
-| Flipper and server | No shared version |
+| `./bitiato-demo hearing 0011` | `demo-v1 \| Hearing \| 0011 \| 8 \| fa` |
+| `./bitiato-demo touch 0011` | `demo-v1 \| Touch \| 0011 \| 20 \| hot` |
+| `./bitiato-demo vision 0100` | `demo-v1 \| Vision \| 0100 \| 0 \| unassigned` |
+| `./bitiato-demo touch 1111` | `demo-v1 \| Touch \| 1111 \| 0 \| unassigned` |
+| `./bitiato-demo vision 10000` | Usage on standard error, exit status 2 |
+| `./bitiato-demo ui 0000` | Usage on standard error, exit status 2 |
 
-If the same button occupies different positions in `v58` and `v8000`, the
-phone uses the `v58` position when it talks to the Flipper.
+The full map is in the [architecture notes](docs/architecture.md).
+The labels are experimental assignments. The demo returns concept IDs
+and labels without generating physical stimuli.
 
-## Project status
+## Run the tests
 
-This README records the initial design. The wire format and the mechanism
-for selecting a shared version are open design questions.
+```sh
+cc -std=c99 -Wall -Wextra -pedantic -Werror \
+  src/bitiato.c conventions/demo_v1.c tests/test_bitiato.c -o bitiato-test
+./bitiato-test
+```
+
+```powershell
+gcc -std=c99 -Wall -Wextra -pedantic -Werror src/bitiato.c conventions/demo_v1.c tests/test_bitiato.c -o bitiato-test.exe
+.\bitiato-test.exe
+```
+
+The tests cover all 80 layer and position pairs, the 20 assignments, the 60
+unassigned entries, invalid inputs and the use of an alternate local map.
+
+## Repository layout
+
+- `src/` contains the C99 interpreter and the separate terminal demo.
+- `conventions/` contains the versioned demo map and its labels.
+- `tests/` contains the executable reference tests.
+- `docs/` contains architectural decisions and open questions.
+- `web/` contains the offline visual explorer.
+
+The [architecture notes](docs/architecture.md) cover compatibility,
+offline operation, composition and potential microcontroller targets.
 
 ## License
 

@@ -1,0 +1,305 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Bitiato · Explore four bits</title>
+    <style>
+      :root {
+        color-scheme: dark;
+        font-family: system-ui, sans-serif;
+        color: #edf4ff;
+        background: #0b1523;
+        --muted: #a8bdd6;
+        --line: #314863;
+        --active: #8af4ce;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+      }
+      main {
+        width: min(100% - 2rem, 62rem);
+        margin: 2rem auto;
+      }
+      h1,
+      h2,
+      p {
+        margin: 0;
+      }
+      header p,
+      .note,
+      .cell span {
+        color: var(--muted);
+      }
+      header p {
+        margin-top: 0.55rem;
+        max-width: 52ch;
+      }
+      .eyebrow {
+        color: var(--active);
+        font:
+          700 0.85rem ui-monospace,
+          monospace;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+      }
+      h1 {
+        margin-top: 0.4rem;
+        font-size: clamp(2rem, 6vw, 3.65rem);
+      }
+      .layout {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) minmax(15rem, 0.62fr);
+        gap: 1rem;
+        margin-top: 1.5rem;
+        align-items: start;
+      }
+      section,
+      aside {
+        background: #132238;
+        border: 1px solid var(--line);
+        border-radius: 1rem;
+        padding: clamp(0.8rem, 2vw, 1.4rem);
+      }
+      h2 {
+        font-size: 1.2rem;
+      }
+      .controls {
+        display: grid;
+        gap: 0.8rem;
+        margin: 1rem 0;
+      }
+      label {
+        display: grid;
+        gap: 0.3rem;
+        font-size: 0.9rem;
+        font-weight: 650;
+      }
+      select,
+      button {
+        font: inherit;
+        color: inherit;
+        background: #0f1c2e;
+        border: 1px solid var(--line);
+        border-radius: 0.55rem;
+      }
+      select {
+        padding: 0.6rem;
+        width: 100%;
+      }
+      :focus-visible {
+        outline: 3px solid #ffd481;
+        outline-offset: 3px;
+      }
+      #cells {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 0.4rem;
+      }
+      .cell {
+        display: grid;
+        align-content: center;
+        gap: 0.25rem;
+        padding: 0.35rem 0.15rem;
+        min-height: 4rem;
+        cursor: pointer;
+        overflow-wrap: anywhere;
+      }
+      code {
+        font-family: ui-monospace, monospace;
+        letter-spacing: 0.08em;
+      }
+      .cell span {
+        font-size: clamp(0.65rem, 1.9vw, 0.85rem);
+      }
+      .cell:disabled {
+        cursor: default;
+      }
+      .cell.assigned {
+        background: #203651;
+      }
+      .cell[aria-pressed="true"] {
+        border-color: var(--active);
+        box-shadow: inset 0 0 0 1px var(--active);
+      }
+      .cell[aria-pressed="true"] code {
+        color: var(--active);
+        font-weight: 800;
+      }
+      .note {
+        margin-top: 0.8rem;
+        font-size: 0.88rem;
+        line-height: 1.5;
+      }
+      #selected-bits {
+        display: block;
+        color: var(--active);
+        font-size: clamp(2rem, 7vw, 3.6rem);
+        margin: 0.7rem 0 0.2rem;
+      }
+      #selected-label {
+        font-size: 1.25rem;
+        font-weight: 700;
+      }
+      #comparison {
+        margin-top: 0.9rem;
+        padding-top: 0.9rem;
+        border-top: 1px solid var(--line);
+        line-height: 1.5;
+      }
+      @media (max-width: 42rem) {
+        .layout {
+          grid-template-columns: 1fr;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <header>
+        <div class="eyebrow">Bitiato · Explorer</div>
+        <h1>One board, 16 cells</h1>
+        <p>
+          Choose a language layer first. Each cell has a four-bit address. Select a cell or change the convention to
+          explore its equivalences.
+        </p>
+      </header>
+      <div class="layout">
+        <section aria-labelledby="board-title">
+          <h2 id="board-title">Four-bit space</h2>
+          <div class="controls">
+            <label
+              >1. Choose a language layer
+              <select id="layer">
+                <option value="" disabled selected>Choose a layer</option>
+                <option>Vision</option>
+                <option>Hearing</option>
+                <option>Smell</option>
+                <option>Taste</option>
+                <option>Touch</option>
+              </select>
+            </label>
+            <label
+              >2. Convention
+              <select id="convention">
+                <option>demo-v1</option>
+                <option>Alternate map</option>
+              </select>
+            </label>
+            <label
+              >When changing maps
+              <select id="mode">
+                <option value="concept">Follow the concept</option>
+                <option value="bits">Keep the bits</option>
+              </select>
+            </label>
+          </div>
+          <div id="cells" role="group" aria-label="16 binary cells"></div>
+          <p class="note">4 assigned · 12 free per layer. Cell addresses stay fixed.</p>
+        </section>
+        <aside aria-labelledby="selection-title">
+          <h2 id="selection-title">Selection</h2>
+          <div aria-live="polite" aria-atomic="true">
+            <code id="selected-bits"></code>
+            <p id="selected-label"></p>
+            <p id="comparison" hidden></p>
+          </div>
+          <p class="note">
+            Change the language layer to interpret the same bits. Use “Follow the concept” when switching conventions to
+            see its new address.
+          </p>
+          <p class="note">Both conventions use the same concept labels. The alternate map is illustrative.</p>
+        </aside>
+      </div>
+    </main>
+    <script>
+      // This view mirrors the four assigned entries per layer in demo-v1.
+      const concepts = [
+        ["red", "green", "blue", "white"],
+        ["do", "re", "mi", "fa"],
+        ["floral", "citrus", "smoky", "minty"],
+        ["sweet", "salty", "sour", "bitter"],
+        ["soft", "rough", "cold", "hot"],
+      ];
+      const positions = [
+        [0, 1, 2, 3],
+        [9, 6, 12, 3],
+      ];
+      const layer = document.getElementById("layer");
+      const convention = document.getElementById("convention");
+      const mode = document.getElementById("mode");
+      const cells = document.getElementById("cells");
+      const selectedBits = document.getElementById("selected-bits");
+      const selectedLabel = document.getElementById("selected-label");
+      const comparison = document.getElementById("comparison");
+      let activeMap = convention.selectedIndex;
+      let position = 0;
+
+      function binary(index) {
+        return index.toString(2).padStart(4, "0");
+      }
+
+      const buttons = Array.from({ length: 16 }, (_, index) => {
+        const button = document.createElement("button");
+        const code = document.createElement("code");
+        const label = document.createElement("span");
+        button.type = "button";
+        button.className = "cell";
+        code.textContent = binary(index);
+        button.append(code, label);
+        button.addEventListener("click", () => {
+          position = index;
+          render();
+        });
+        cells.append(button);
+        return { button, label };
+      });
+
+      function positionInMap(targetMap) {
+        const concept = positions[activeMap].indexOf(position);
+        return mode.value === "concept" && concept >= 0 ? positions[targetMap][concept] : position;
+      }
+
+      function render() {
+        const names = concepts[layer.selectedIndex - 1];
+        convention.disabled = !names;
+        mode.disabled = !names;
+        const map = positions[activeMap];
+        const concept = map.indexOf(position);
+        buttons.forEach(({ button, label }, index) => {
+          const name = names?.[map.indexOf(index)];
+          button.disabled = !names;
+          button.classList.toggle("assigned", Boolean(name));
+          button.setAttribute("aria-pressed", String(Boolean(names) && index === position));
+          label.textContent = name ?? (names ? "Free" : "");
+        });
+        if (!names) {
+          selectedLabel.textContent = "Choose a language layer to begin.";
+          return;
+        }
+        selectedBits.textContent = binary(position);
+        selectedLabel.textContent = names[concept] ?? "Unassigned";
+        const otherMap = activeMap === 0 ? 1 : 0;
+        const nextPosition = positionInMap(otherMap);
+        const nextLabel = names[positions[otherMap].indexOf(nextPosition)] ?? "Unassigned";
+        comparison.hidden = false;
+        comparison.textContent =
+          "Preview in " + convention.options[otherMap].text + " → " + binary(nextPosition) + " · " + nextLabel;
+      }
+
+      convention.addEventListener("change", () => {
+        const targetMap = convention.selectedIndex;
+        position = positionInMap(targetMap);
+        activeMap = targetMap;
+        render();
+      });
+      mode.addEventListener("change", render);
+      layer.addEventListener("change", render);
+      render();
+    </script>
+  </body>
+</html>
