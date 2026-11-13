@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="Explora Bitiato: un lenguaje binario compartido con capas de contexto y convenciones versionadas." />
+    <title>Bitiato · Explora el proyecto</title>
+    <style>
+      :root {
+        color-scheme: dark;
+        font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+        color: #edf4ff;
+        background: #0b1523;
+        --muted: #a8bdd6;
+        --line: #314863;
+        --active: #8af4ce;
+      }
+      * { box-sizing: border-box; }
+      body { margin: 0; min-height: 100vh; }
+      main { width: min(100% - 2rem, 68rem); margin: 0 auto; padding: 5rem 0 3rem; }
+      .eyebrow { color: var(--active); font: 700 .85rem ui-monospace, monospace; letter-spacing: .14em; }
+      h1 { margin: .55rem 0 1rem; font-size: clamp(2.8rem, 9vw, 6rem); line-height: 1; letter-spacing: -.055em; }
+      .intro { max-width: 46rem; color: var(--muted); font-size: clamp(1.05rem, 2.5vw, 1.3rem); line-height: 1.65; }
+      .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 19rem), 1fr)); gap: 1rem; margin-top: 2.5rem; }
+      .card { display: flex; flex-direction: column; min-height: 16rem; padding: 1.4rem; border: 1px solid var(--line); border-radius: 1rem; background: #132238; }
+      .card h2 { margin: 0 0 .7rem; font-size: 1.35rem; }
+      .card p { margin: 0 0 1.4rem; color: var(--muted); line-height: 1.6; }
+      a { color: var(--active); }
+      .button { align-self: flex-start; margin-top: auto; padding: .7rem 1rem; border: 1px solid #477563; border-radius: .6rem; background: #18372f; color: var(--active); font-weight: 700; text-decoration: none; }
+      .button:hover { background: #21483e; }
+      footer { margin-top: 2.5rem; color: var(--muted); font-size: .95rem; }
+      footer a { margin-right: 1rem; }
+      :focus-visible { outline: 3px solid #ffd481; outline-offset: 4px; }
+    </style>
+  </head>
+  <body>
+    <main>
+      <header>
+        <p class="eyebrow">UN LENGUAJE · CINCO CAPAS</p>
+        <h1>Bitiato</h1>
+        <p class="intro">Un sistema binario para interpretar conceptos en distintas capas de lenguaje, diseñado para ser sencillo tanto para las personas como para los dispositivos.</p>
+      </header>
+      <section class="grid" aria-label="Explora Bitiato">
+        <article class="card">
+          <h2>Explorador visual</h2>
+          <p>Recorre las 16 posiciones binarias y compara cómo se interpreta una misma posición en las cinco capas: visión, oído, olfato, gusto y tacto.</p>
+          <a class="button" href="./web/index.html">Abrir el explorador</a>
+        </article>
+        <article class="card">
+          <h2>Laboratorio de símbolos UI</h2>
+          <p>Explora componentes, propiedades y estados de interfaz. Compón secuencias de símbolos y consulta sus puntos de código.</p>
+          <a class="button" href="./web/ui/index.html">Abrir el laboratorio</a>
+        </article>
+        <article class="card">
+          <h2>Documentación</h2>
+          <p>Lee las notas sobre la notación de la interfaz, el catálogo de símbolos y cómo reconstruir la fuente de Bitiato UI.</p>
+          <a class="button" href="https://github.com/kyrokode/bitiato/blob/main/docs/ui-language.md">Leer las notas de UI</a>
+        </article>
+      </section>
+      <footer>
+        <a href="https://github.com/kyrokode/bitiato">Ver el código en GitHub</a>
+        <span>Los exploradores funcionan en el navegador; el laboratorio UI necesita sus archivos de fuente y JavaScript en las rutas originales.</span>
+      </footer>
+    </main>
+  </body>
+</html>
